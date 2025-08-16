@@ -1,26 +1,28 @@
 🔐 Secure Employee Management System
 
-A Spring Boot REST API project to manage employee records with advanced security features. Built using Spring Security with JWT authentication and role-based access control, this system ensures employee data is managed securely and efficiently.
+A Spring Boot REST API for managing employee records with JWT authentication, role-based access control, and secure CRUD operations.
+
+📌 Overview
+
+This project is a secure backend system for employee management. It allows administrators and users to perform different operations on employee records while ensuring security with JWT and Spring Security.
 
 ✨ Features
 
-🔑 JWT Authentication & Authorization
+🔑 JWT authentication & authorization
 
-👨‍💼 Employee CRUD Operations (Create, Read, Update, Delete)
+👨‍💼 Employee CRUD operations
 
-🛡 Role-Based Access Control (Admin/User)
+🛡 Role-based access control (Admin/User)
 
-✅ Input Validation & Exception Handling
+✅ Input validation & exception handling
 
-📊 Pagination & Sorting for employees
+📊 Pagination & sorting
 
-🗄 MySQL Integration with JPA/Hibernate
-
-🌐 RESTful API Endpoints with best practices
+🗄 MySQL + JPA/Hibernate integration
 
 🛠 Tech Stack
 
-Backend: Spring Boot, Spring Security, Spring Data JPA, Hibernate
+Backend: Spring Boot, Spring Security, JPA, Hibernate
 
 Database: MySQL
 
@@ -28,53 +30,51 @@ Authentication: JWT (JSON Web Token)
 
 Build Tool: Maven
 
-Testing (optional): JUnit, Mockito
-
 📂 Project Structure
-Secure-Employee-Management/
- ├── controller/       # REST Controllers
- ├── entity/           # Employee Entity
- ├── repository/       # JPA Repositories
- ├── service/          # Business Logic
- ├── security/         # JWT + Security Config
- ├── exception/        # Custom Exceptions & Handlers
- └── resources/
-      └── application.properties  # DB Config
+src/main/java/com/example/employee
+ ├── controller/     # REST Controllers
+ ├── entity/         # Entities (Employee, User, Role)
+ ├── repository/     # JPA Repositories
+ ├── service/        # Business Logic
+ ├── security/       # JWT + Spring Security Config
+ └── exception/      # Custom Exceptions
 
 ⚡ Getting Started
-1. Clone the Repository
-git clone https://github.com/your-username/secure-employee-management.git
-cd secure-employee-management
+1. Clone Repository
+git clone https://github.com/harsh-w-s/Secure-Employee-Management.git
 
 2. Configure Database
 
-Edit src/main/resources/application.properties:
+Edit application.properties:
 
 spring.datasource.url=jdbc:mysql://localhost:3306/employee_db
-spring.datasource.username=your_username
-spring.datasource.password=your_password
+spring.datasource.username=Harsh-w-s
+spring.datasource.password=********
 spring.jpa.hibernate.ddl-auto=update
 
-3. Run the Application
+3. Run Application
 mvn spring-boot:run
 
-4. Access APIs
-
-Swagger UI (if enabled): http://localhost:8080/swagger-ui/
-
-Example Endpoints:
+📡 API Endpoints
+🔑 Auth APIs
 
 POST /api/auth/register → Register new user
 
-POST /api/auth/login → Generate JWT Token
+POST /api/auth/login → Login & get JWT token
 
-GET /api/employees → Get employee list (JWT required)
+👨‍💼 Employee APIs
 
-POST /api/employees → Add employee (Admin only)
+GET /api/employees → Fetch all employees (JWT required)
+
+POST /api/employees → Add new employee (Admin only)
+
+PUT /api/employees/{id} → Update employee (Admin only)
+
+DELETE /api/employees/{id} → Delete employee (Admin only)
 
 🔒 Authentication & Roles
 
-Pass JWT in headers:
+Use JWT in the header:
 
 Authorization: Bearer <token>
 
@@ -83,18 +83,14 @@ Roles:
 
 ROLE_ADMIN → Full access (CRUD)
 
-ROLE_USER → Read-only
+ROLE_USER → Read-only access
 
 🚀 Future Enhancements
 
-✅ Unit & integration tests with JUnit/Mockito
+Add JUnit & Mockito tests
 
-✅ Docker support
+Docker support for deployment
 
-✅ CI/CD pipeline with GitHub Actions/Jenkins
+CI/CD pipeline with GitHub Actions
 
-✅ Frontend integration (React/Angular)
-
-🤝 Contributing
-
-Pull requests are welcome! For major changes, please open an issue first.
+Frontend integration (React/Angular)
