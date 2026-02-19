@@ -1,224 +1,96 @@
-# Secure Employee Management System
+🔐 Secure Employee Management System
 
-## Overview
+A Spring Boot REST API for managing employee records with JWT authentication, role-based access control, and secure CRUD operations.
 
-Secure Employee Management System is a backend service for managing employee records with authentication and authorization controls. It is implemented with Spring Boot and exposes RESTful APIs for user registration, login, and employee lifecycle operations.
+📌 Overview
 
-The application is designed around a layered architecture (controller, service, repository, security) and uses JWT-based authentication with Spring Security.
+This project is a secure backend system for employee management. It allows administrators and users to perform different operations on employee records while ensuring security with JWT and Spring Security.
 
-## Key Capabilities
+✨ Features
 
-- JWT-based authentication for stateless API access.
-- Role-aware authorization using method-level and request-level security controls.
-- Employee CRUD endpoints with validation and pagination support.
-- MySQL persistence with Spring Data JPA and Hibernate.
-- Password hashing with BCrypt.
+🔑 JWT authentication & authorization
 
-## Technology Stack
+👨‍💼 Employee CRUD operations
 
-- **Language**: Java 21
-- **Framework**: Spring Boot 3.3.12
-- **Security**: Spring Security, JSON Web Tokens (JJWT)
-- **Data Access**: Spring Data JPA, Hibernate
-- **Database**: MySQL
-- **Build Tool**: Maven
-- **Testing**: JUnit 5 (Spring Boot Test)
+🛡 Role-based access control (Admin/User)
 
-## Project Structure
+✅ Input validation & exception handling
 
-```text
-employeeApp/
-├── pom.xml
-├── src/
-│   ├── main/
-│   │   ├── java/com/example/employeeApp/
-│   │   │   ├── EmployeeAppApplication.java
-│   │   │   ├── controller/
-│   │   │   ├── service/
-│   │   │   ├── repository/
-│   │   │   ├── model/
-│   │   │   ├── security/
-│   │   │   └── config/
-│   │   └── resources/
-│   │       └── application.properties
-│   └── test/java/com/example/employeeApp/
-│       └── EmployeeAppApplicationTests.java
-└── mvnw
-```
+📊 Pagination & sorting
 
-## Architecture Summary
+🗄 MySQL + JPA/Hibernate integration
 
-The request lifecycle is structured as follows:
+🛠 Tech Stack
 
-1. Client authenticates via `/api/auth/login` and receives a JWT.
-2. Client includes `Authorization: Bearer <token>` for secured endpoints.
-3. `JwtAuthFilter` extracts and validates the token, then populates Spring Security context.
-4. Controllers delegate business logic to services.
-5. Services interact with repositories for persistence operations.
+Backend: Spring Boot, Spring Security, JPA, Hibernate
 
-This separation keeps transport concerns, business logic, and persistence concerns isolated and easier to evolve.
+Database: MySQL
 
-## Prerequisites
+Authentication: JWT (JSON Web Token)
 
-- JDK 21
-- Maven 3.9+ (or use the included Maven wrapper)
-- MySQL 8+
+Build Tool: Maven
 
-## Setup and Configuration
+📂 Project Structure
+src/main/java/com/example/employee
+ ├── controller/     # REST Controllers
+ ├── entity/         # Entities (Employee, User, Role)
+ ├── repository/     # JPA Repositories
+ ├── service/        # Business Logic
+ ├── security/       # JWT + Spring Security Config
+ └── exception/      # Custom Exceptions
 
-### 1. Clone the Repository
+⚡ Getting Started
+1. Clone Repository
+git clone https://github.com/harsh-w-s/Secure-Employee-Management.git
 
-```bash
-git clone <your-repository-url>
-cd Secure-Employee-Management-System/employeeApp
-```
+2. Configure Database
 
-### 2. Configure Database and Application Properties
+Edit application.properties:
 
-Update `src/main/resources/application.properties` for your environment:
-
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/employeeApp?useSSL=false&serverTimezone=UTC
-spring.datasource.username=<db-username>
-spring.datasource.password=<db-password>
+spring.datasource.url=jdbc:mysql://localhost:3306/employee_db
+spring.datasource.username=Harsh-w-s
+spring.datasource.password=********
 spring.jpa.hibernate.ddl-auto=update
-```
 
-Recommended production practices:
+3. Run Application
+mvn spring-boot:run
 
-- Move all secrets (database password, JWT secret, etc.) to environment variables or a secret manager.
-- Use least-privilege database users.
-- Disable SQL logging in production unless required for troubleshooting.
+📡 API Endpoints
+🔑 Auth APIs
 
-### 3. Build and Run
+POST /api/auth/register → Register new user
 
-Using Maven wrapper:
+POST /api/auth/login → Login & get JWT token
 
-```bash
-./mvnw clean spring-boot:run
-```
+👨‍💼 Employee APIs
 
-Or with local Maven installation:
+GET /api/employees → Fetch all employees (JWT required)
 
-```bash
-mvn clean spring-boot:run
-```
+POST /api/employees → Add new employee (Admin only)
 
-The application starts on `http://localhost:8080` by default.
+PUT /api/employees/{id} → Update employee (Admin only)
 
-## Authentication and Authorization
+DELETE /api/employees/{id} → Delete employee (Admin only)
 
-### Registration
+🔒 Authentication & Roles
 
-`POST /api/auth/register`
+Use JWT in the header:
 
-Registers a new application user. Passwords are encoded before persistence.
+Authorization: Bearer <token>
 
-### Login
 
-`POST /api/auth/login`
+Roles:
 
-Authenticates user credentials and returns a JWT token.
+ROLE_ADMIN → Full access (CRUD)
 
-### Secured Access
+ROLE_USER → Read-only access
 
-Use the token in request headers:
+🚀 Future Enhancements
 
-```http
-Authorization: Bearer <jwt-token>
-```
+Add JUnit & Mockito tests
 
-Security policy is stateless (`SessionCreationPolicy.STATELESS`), and all non-auth routes require authentication by default.
+Docker support for deployment
 
-## API Endpoints
+CI/CD pipeline with GitHub Actions
 
-### Authentication
-
-- `POST /api/auth/register`
-- `POST /api/auth/login`
-
-### Employee Management
-
-- `GET /employees` — list employees with pagination (`page`, `size`)
-- `GET /employees/{id}` — fetch a specific employee
-- `POST /employees` — create a new employee
-- `PUT /employees/{id}` — update an employee
-- `DELETE /employees/{id}` — delete an employee
-
-## Example Requests
-
-### Register User
-
-```bash
-curl -X POST "http://localhost:8080/api/auth/register" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "admin",
-    "password": "strongPassword123",
-    "role": "ADMIN"
-  }'
-```
-
-### Login
-
-```bash
-curl -X POST "http://localhost:8080/api/auth/login" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "username": "admin",
-    "password": "strongPassword123"
-  }'
-```
-
-### Access Employees API
-
-```bash
-curl -X GET "http://localhost:8080/employees?page=0&size=5" \
-  -H "Authorization: Bearer <jwt-token>"
-```
-
-## Validation and Error Handling
-
-Domain models include validation annotations (for example, required fields, email format, minimum salary constraints, and date constraints). Invalid request payloads result in standard Spring validation errors.
-
-For production readiness, consider introducing:
-
-- Centralized exception handling (`@ControllerAdvice`).
-- Consistent API error response schema with traceable error codes.
-- Structured logging and request correlation IDs.
-
-## Testing
-
-Run tests using:
-
-```bash
-./mvnw test
-```
-
-Current test coverage is minimal and should be expanded with:
-
-- Unit tests for services and JWT utility behavior.
-- Integration tests for authentication and authorization flows.
-- Repository and controller tests for data and contract validation.
-
-## Operational and Security Notes
-
-Before deploying to production, review the following:
-
-- Externalize credentials and secrets.
-- Configure CORS and rate limiting based on client access patterns.
-- Enforce transport security (TLS termination) in all environments.
-- Add observability (metrics, health checks, logs, traces).
-- Introduce CI checks for tests, static analysis, and dependency vulnerabilities.
-
-## Roadmap Suggestions
-
-- Add OpenAPI/Swagger documentation.
-- Introduce API versioning and backward-compatibility policies.
-- Containerize with Docker and provide deployment manifests.
-- Add migration tooling (Flyway/Liquibase) for controlled schema changes.
-- Expand role model and permissions into finer-grained access controls.
-
-## License
-
-No license file is currently present in this repository. Add a license before public distribution.
+Frontend integration (React/Angular)
